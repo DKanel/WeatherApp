@@ -128,70 +128,70 @@ struct ContentView: View {
             }
             .ignoresSafeArea(.all,edges: .bottom)
         }
-            .onAppear(){
+        .onAppear(){
+            
+            //Dates
+            datesFormatted = viewModel.getDate()
+            //Weather
+            viewModel.getWeather(urlIndex: Cities.city.Athens){ weatherResponse in
+                //Set Background image
+                let isSunset = viewModel.checkForSunset()
+                if isSunset == true{
+                    backgroundImage = "backgroundNight"
+                    textColor = .white
+                }
+                //Address
+                locationManager.checkAuthorization()
+                locationManager.getLocation { location in
+                    viewModel.getAddress(location: location) { city in
+                        currentCity = String(city)
+                    }
+                }
+                viewModel.getCurrentTemperature(urlIndexForCurrentTemperature: Cities.city.Athens) { response in
+                    self.temperature = String(response.currentWeather)
+                }
+                let rainny = viewModel.getWeatherType()
+                if rainny == true{
+                    imageName = "cloud.rain.fill"
+                    imageColor = .gray
+                    imageColor2 = .blue
+                }else{
+                    imageName = "sun.max.fill"
+                    imageColor = .yellow
+                    imageColor2 = .yellow
+                }
+            
+                let temperaturesMax = viewModel.getNextDaysMaxTemperature()
+                var numberIndexForTemperaturesMax = 0
+                for temperature in temperaturesMax {
+                    temperaturesMaxArray[numberIndexForTemperaturesMax] = String(temperature.temperature)
+                    numberIndexForTemperaturesMax = numberIndexForTemperaturesMax + 1
+                }
                 
-                //Dates
-                datesFormatted = viewModel.getDate()
-                //Weather
-                viewModel.getWeather(urlIndex: Cities.city.Athens){ weatherResponse in
-                    //Set Background image
-                    let isSunset = viewModel.checkForSunset()
-                    if isSunset == true{
-                        backgroundImage = "backgroundNight"
-                        textColor = .white
-                    }
-                    //Address
-                    locationManager.checkAuthorization()
-                    locationManager.getLocation { location in
-                        viewModel.getAddress(location: location) { city in
-                            currentCity = String(city)
-                        }
-                    }
-                    viewModel.getCurrentTemperature(urlIndexForCurrentTemperature: Cities.city.Athens) { response in
-                        self.temperature = String(response.currentWeather)
-                    }
-                    let rainny = viewModel.getWeatherType()
-                    if rainny == true{
-                        imageName = "cloud.rain.fill"
-                        imageColor = .gray
-                        imageColor2 = .blue
-                    }else{
-                        imageName = "sun.max.fill"
-                        imageColor = .yellow
-                        imageColor2 = .yellow
-                    }
-                
-                    let temperaturesMax = viewModel.getNextDaysMaxTemperature()
-                    var numberIndexForTemperaturesMax = 0
-                    for temperature in temperaturesMax {
-                        temperaturesMaxArray[numberIndexForTemperaturesMax] = String(temperature.temperature)
-                        numberIndexForTemperaturesMax = numberIndexForTemperaturesMax + 1
-                    }
-                    
-                    let temperaturesMin = viewModel.getNextDaysMinTemperature()
-                    var numberIndexForTemperaturesMin = 0
-                    for temperature in temperaturesMin {
-                        temperaturesMinArray[numberIndexForTemperaturesMin] = String(temperature.temperature)
-                        numberIndexForTemperaturesMin = numberIndexForTemperaturesMin + 1
-                    }
+                let temperaturesMin = viewModel.getNextDaysMinTemperature()
+                var numberIndexForTemperaturesMin = 0
+                for temperature in temperaturesMin {
+                    temperaturesMinArray[numberIndexForTemperaturesMin] = String(temperature.temperature)
+                    numberIndexForTemperaturesMin = numberIndexForTemperaturesMin + 1
+                }
 
-                    let rainInNextDays = viewModel.getNextDaysWeatherType()
-                    var numberIndexForRains = 0
-                    for rain in rainInNextDays{
-                        if rain.rains > 0{
-                            imagesNameArray[numberIndexForRains] = "cloud.rain.fill"
-                            colorForNextDayImages[numberIndexForRains] = Color.gray
-                            colorForNextDayImages2[numberIndexForRains] = Color.blue
-                            numberIndexForRains = numberIndexForRains + 1
-                        }else{
-                            imagesNameArray[numberIndexForRains] = "sun.max.fill"
-                            colorForNextDayImages[numberIndexForRains] = Color.yellow
-                            colorForNextDayImages2[numberIndexForRains] = Color.yellow
-                            numberIndexForRains = numberIndexForRains + 1
-                        }
+                let rainInNextDays = viewModel.getNextDaysWeatherType()
+                var numberIndexForRains = 0
+                for rain in rainInNextDays{
+                    if rain.rains > 0{
+                        imagesNameArray[numberIndexForRains] = "cloud.rain.fill"
+                        colorForNextDayImages[numberIndexForRains] = Color.gray
+                        colorForNextDayImages2[numberIndexForRains] = Color.blue
+                        numberIndexForRains = numberIndexForRains + 1
+                    }else{
+                        imagesNameArray[numberIndexForRains] = "sun.max.fill"
+                        colorForNextDayImages[numberIndexForRains] = Color.yellow
+                        colorForNextDayImages2[numberIndexForRains] = Color.yellow
+                        numberIndexForRains = numberIndexForRains + 1
                     }
                 }
             }
+        }
     }
 }
 

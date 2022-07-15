@@ -33,7 +33,7 @@ struct SheetView: View {
     var body: some View {
         ZStack{
             VStack{
-                Text("Drag to choose city you want to see!")
+                Text("Drag to choose the city you want to see!")
                 HStack(spacing: 20){
                     //Athens Button
                     VStack{
