@@ -33,7 +33,7 @@ struct SheetView: View {
     var body: some View {
         ZStack{
             VStack{
-                Text("Chose city you want to see!")
+                Text("Drag to choose city you want to see!")
                 HStack(spacing: 20){
                     //Athens Button
                     VStack{
@@ -87,10 +87,14 @@ struct SheetView: View {
                             }
                         })
                         {
-                            Image(systemName: "p.circle.fill")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.teal)
+                            if #available(iOS 15.0, *) {
+                                Image(systemName: "p.circle.fill")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.teal)
+                            } else {
+                                // Fallback on earlier versions
+                            }
 //                                .background(BlurView(style: .dark))
 //                                .clipShape(Circle())
                         }
@@ -107,10 +111,14 @@ struct SheetView: View {
                             }
                         })
                         {
-                            Image(systemName: "l.circle.fill")
-                                .resizable()
-                                .frame(width: 50, height: 50)
-                                .foregroundColor(.brown)
+                            if #available(iOS 15.0, *) {
+                                Image(systemName: "l.circle.fill")
+                                    .resizable()
+                                    .frame(width: 50, height: 50)
+                                    .foregroundColor(.brown)
+                            } else {
+                                // Fallback on earlier versions
+                            }
 //                                .background(BlurView(style: .dark))
 //                                .clipShape(Circle())
                         }

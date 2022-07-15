@@ -23,6 +23,7 @@ class WeatherViewModel:NSObject, CLLocationManagerDelegate{
     
     
     
+    
     // Location
     func getAddress(location: CLLocation,completion: @escaping (String)->Void){
 

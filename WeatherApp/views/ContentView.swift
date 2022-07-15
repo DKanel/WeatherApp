@@ -8,10 +8,12 @@
 import SwiftUI
 import CoreLocation
 import SDWebImageSwiftUI
+import RxSwift
 
 struct ContentView: View {
     
     var viewModel = WeatherViewModel()
+    var disposeBag = DisposeBag()
     @ObservedObject var locationManager = LocationManager()
     @State var isAnimating: Bool = true
     @State private var showSheet = false
@@ -42,12 +44,12 @@ struct ContentView: View {
             GeometryReader{ proxy in
                 let frame  = proxy.frame(in: .global)
                 //Gif
-//                WebImage(url: URL(string: "https://media0.giphy.com/media/k3CeSrt9IZ6aorWCy1/giphy.gif?cid=790b761121d68267b7f23c0b7d9eb18adac72f147580195b&rid=giphy.gif&ct=g"),isAnimating: $isAnimating)
-                Image(backgroundImage)
+                WebImage(url: URL(string: "https://media0.giphy.com/media/k3CeSrt9IZ6aorWCy1/giphy.gif?cid=790b761121d68267b7f23c0b7d9eb18adac72f147580195b&rid=giphy.gif&ct=g"),isAnimating: $isAnimating)
+//                Image(backgroundImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: frame.width, height: frame.height)
-                    .brightness(-0.1)
+//                    .brightness(-0.1)
             }
             .ignoresSafeArea(.all)
             
@@ -62,81 +64,26 @@ struct ContentView: View {
                 }
                 VStack(alignment: .center){
                     Text("Temperatures in the next days:").foregroundColor(textColor)
-                    HStack{
-                        Text(datesFormatted[1]).foregroundColor(textColor)
-                        Text("Max:").foregroundColor(textColor)
-                        Text(temperaturesMaxArray[1]).foregroundColor(textColor).bold()
-                        Text("Min:").foregroundColor(textColor)
-                        Text(temperaturesMinArray[1]).foregroundColor(textColor).bold()
-                        Text("Weather:").foregroundColor(textColor)
-                        Image(systemName: imagesNameArray[1])
-                            .resizable()
-                            .frame(width: UIScreen.main.bounds.size.width / 16, height:UIScreen.main.bounds.size.width / 16, alignment: .center)
-//                            .foregroundStyle(colorForNextDayImages[1], colorForNextDayImages2[1])
+                    ForEach(1..<7) { number in
+                        HStack{
+                            Text(datesFormatted[number]).foregroundColor(textColor)
+                            Text("Max:").foregroundColor(textColor)
+                            Text(temperaturesMaxArray[number]).foregroundColor(textColor).bold()
+                            Text("Min:").foregroundColor(textColor)
+                            Text(temperaturesMinArray[number]).foregroundColor(textColor).bold()
+                            Text("Weather:").foregroundColor(textColor)
+                            if #available(iOS 15.0, *) {
+                                Image(systemName: imagesNameArray[number])
+                                    .resizable()
+                                    .frame(width: UIScreen.main.bounds.size.width / 16, height:UIScreen.main.bounds.size.width / 16, alignment: .center)
+                                    .foregroundStyle(colorForNextDayImages[number], colorForNextDayImages2[number])
+                            } else {
+                                // Fallback on earlier versions
                             }
-                    HStack{
-                        Text(datesFormatted[2]).foregroundColor(textColor)
-                        Text("Max:").foregroundColor(textColor)
-                        Text(temperaturesMaxArray[2]).foregroundColor(textColor).bold()
-                        Text("Min:").foregroundColor(textColor)
-                        Text(temperaturesMinArray[2]).foregroundColor(textColor).bold()
-                        Text("Weather:").foregroundColor(textColor)
-                        Image(systemName: imagesNameArray[2])
-                            .resizable()
-                            .frame(width: UIScreen.main.bounds.size.width / 16, height:             UIScreen.main.bounds.size.width / 16, alignment: .center)
-//                            .foregroundStyle(colorForNextDayImages[2], colorForNextDayImages2[2])
-                    }
-                    HStack{
-                        Text(datesFormatted[3]).foregroundColor(textColor)
-                        Text("Max:").foregroundColor(textColor)
-                        Text(temperaturesMaxArray[3]).foregroundColor(textColor).bold()
-                        Text("Min:").foregroundColor(textColor)
-                        Text(temperaturesMinArray[3]).foregroundColor(textColor).bold()
-                        Text("Weather:").foregroundColor(textColor)
-                        Image(systemName: imagesNameArray[3])
-                            .resizable()
-                            .frame(width: UIScreen.main.bounds.size.width / 16, height:             UIScreen.main.bounds.size.width / 16, alignment: .center)
-//                            .foregroundStyle(colorForNextDayImages[3], colorForNextDayImages2[3])
-                    }
-                    HStack{
-                        Text(datesFormatted[4]).foregroundColor(textColor)
-                        Text("Max:").foregroundColor(textColor)
-                        Text(temperaturesMaxArray[4]).foregroundColor(textColor).bold()
-                        Text("Min:").foregroundColor(textColor)
-                        Text(temperaturesMinArray[4]).foregroundColor(textColor).bold()
-                        Text("Weather:").foregroundColor(textColor)
-                        Image(systemName: imagesNameArray[4])
-                            .resizable()
-                            .frame(width: UIScreen.main.bounds.size.width / 16, height:             UIScreen.main.bounds.size.width / 16, alignment: .center)
-//                            .foregroundStyle(colorForNextDayImages[4], colorForNextDayImages2[4])
-                    }
-                    HStack{
-                        Text(datesFormatted[5]).foregroundColor(textColor)
-                        Text("Max:").foregroundColor(textColor)
-                        Text(temperaturesMaxArray[5]).foregroundColor(textColor).bold()
-                        Text("Min:").foregroundColor(textColor)
-                        Text(temperaturesMinArray[5]).foregroundColor(textColor).bold()
-                        Text("Weather:").foregroundColor(textColor)
-                        Image(systemName: imagesNameArray[5])
-                            .resizable()
-                            .frame(width: UIScreen.main.bounds.size.width / 16, height:             UIScreen.main.bounds.size.width / 16, alignment: .center)
-//                            .foregroundStyle(colorForNextDayImages[5], colorForNextDayImages2[5])
-                    }
-                    HStack{
-                        Text(datesFormatted[6]).foregroundColor(textColor)
-                        Text("Max:").foregroundColor(textColor)
-                        Text(temperaturesMaxArray[6]).foregroundColor(textColor).bold()
-                        Text("Min:").foregroundColor(textColor)
-                        Text(temperaturesMinArray[6]).foregroundColor(textColor).bold()
-                        Text("Weather:").foregroundColor(textColor)
-                        Image(systemName: imagesNameArray[6])
-                            .resizable()
-                            .frame(width: UIScreen.main.bounds.size.width / 16, height:             UIScreen.main.bounds.size.width / 16, alignment: .center)
-//                            .foregroundStyle(colorForNextDayImages[6], colorForNextDayImages2[6])
+                                }
                     }
                 }
                 Spacer()
-//                    .frame(width: UIScreen.main.bounds.width, height: 400, alignment: .center)
             }
             .blur(radius: viewModel.setBlur(offset: offset))
             
@@ -155,7 +102,7 @@ struct ContentView: View {
                         }
                         .frame(maxHeight: .infinity, alignment: .top)
                     }
-                        .offset(y: height - 30)
+                        .offset(y: height - 60)
                         .offset(y: -offset > 0 ? -offset <= (height - 100) ? offset : -(height - 100) : 0)
                         .gesture(DragGesture().updating($gestureOffset, body: {value, out, inP in
                             out = value.translation.height
@@ -182,6 +129,7 @@ struct ContentView: View {
             .ignoresSafeArea(.all,edges: .bottom)
         }
             .onAppear(){
+                
                 //Dates
                 datesFormatted = viewModel.getDate()
                 //Weather
@@ -193,12 +141,15 @@ struct ContentView: View {
                         textColor = .white
                     }
                     //Address
-//                    currentCity = locationManager.locationCity
-                    
+                    locationManager.checkAuthorization()
+                    locationManager.getLocation { location in
+                        viewModel.getAddress(location: location) { city in
+                            currentCity = String(city)
+                        }
+                    }
                     viewModel.getCurrentTemperature(urlIndexForCurrentTemperature: Cities.city.Athens) { response in
                         self.temperature = String(response.currentWeather)
                     }
-                
                     let rainny = viewModel.getWeatherType()
                     if rainny == true{
                         imageName = "cloud.rain.fill"
