@@ -11,6 +11,7 @@ PODS:
   - SDWebImage/Core (5.13.0)
   - SDWebImageSwiftUI (2.0.2):
     - SDWebImage (~> 5.10)
+  - SwiftUIPager (2.4.0)
   - SwiftyJSON (5.0.1)
 
 DEPENDENCIES:
@@ -18,6 +19,7 @@ DEPENDENCIES:
   - RxCocoa (= 6.5.0)
   - RxSwift (= 6.5.0)
   - SDWebImageSwiftUI
+  - SwiftUIPager
   - SwiftyJSON
 
 SPEC REPOS:
@@ -28,6 +30,7 @@ SPEC REPOS:
     - RxSwift
     - SDWebImage
     - SDWebImageSwiftUI
+    - SwiftUIPager
     - SwiftyJSON
 
 SPEC CHECKSUMS:
@@ -37,8 +40,9 @@ SPEC CHECKSUMS:
   RxSwift: 5710a9e6b17f3c3d6e40d6e559b9fa1e813b2ef8
   SDWebImage: 0327043dbb9533e75f2eff8445b3df0f2ceca6ac
   SDWebImageSwiftUI: 8a3923c95108312b03a599ec1498754af55a6819
+  SwiftUIPager: 06833fb6991ffa64d096ee4a9fc0d32edd495f49
   SwiftyJSON: 2f33a42c6fbc52764d96f13368585094bfd8aa5e
 
-PODFILE CHECKSUM: f45420ff2b143a6aed61b04a270a8a5df8a0c738
+PODFILE CHECKSUM: caac60481b71b99711afa63a420706ce6ae61984
 
 COCOAPODS: 1.11.3

@@ -21,11 +21,13 @@ class WeatherApiRequest{
     let urlParis = "https://api.open-meteo.com/v1/forecast?latitude=48.8567&longitude=2.3510&daily=temperature_2m_max,temperature_2m_min,sunset,rain_sum&timezone=Europe%2FBerlin" // Paris
     let urlLondon = "https://api.open-meteo.com/v1/forecast?latitude=51.5002&longitude=-0.1262&daily=temperature_2m_max,temperature_2m_min,sunset,rain_sum&timezone=Europe%2FLondon" // London
     var url = ""
+    var url2 = "https://api.open-meteo.com/v1/forecast?latitude=37.9792&longitude=23.7166&hourly=temperature_2m&timezone=Europe%2FMoscow"
     
     var dailyRain = [RainsModel]()
     var dailyMaxTemperature = [TemperaturesMaxModel]()
     var dailyMinTemperature = [TemperaturesMinModel]()
     var dailySunset = [SunsetModel]()
+    var hourlyTemperature = [HourlyTemperatureModel]()
     
     func makeCall(urlIndex: Cities.city, completion: @escaping(WeatherModel)->Void){
         
@@ -78,4 +80,23 @@ class WeatherApiRequest{
         }
     }
 }
+    
+    func makeHourlyTempCall(completion: @escaping ([HourlyTemperatureModel]) -> Void){
+        AF.request(url2).responseJSON {  response in
+            switch response.result{
+            case .success(let value):
+                let jsonValue = JSON(value)
+                let hourlyTempModel = jsonValue["hourly"]["temperature_2m"].arrayValue
+                
+                for model in hourlyTempModel{
+                    let hTemp = HourlyTemperatureModel(json: model)
+                    self.hourlyTemperature.append(hTemp)
+                }
+                print("Hourly",self.hourlyTemperature[0].hTemperature)
+                completion(self.hourlyTemperature)
+            case .failure(let error):
+                print("Hourly Error", error)
+        }
+        }
+    }
 }

@@ -40,6 +40,27 @@ class WeatherViewModel:NSObject, CLLocationManagerDelegate{
         }
     }
     
+    func getCity(location: CLLocation,completion: @escaping (Cities.city)->Void){
+        var city = Cities.city.Athens
+        getAddress(location: location) { response in
+            switch response{
+            case "London":
+                city = Cities.city.London
+            case "Athens":
+                city = Cities.city.Athens
+            case "Berlin":
+                city = Cities.city.Berlin
+            case "Paris":
+                city = Cities.city.Paris
+            default:
+                city = Cities.city.Athens
+            }
+            completion(city)
+        }
+    }
+    
+    
+    //Date and Time
     func getDate()->Array<String>{
         dateFormatterForDays.dateFormat = "dd/MM"
         
@@ -81,6 +102,7 @@ class WeatherViewModel:NSObject, CLLocationManagerDelegate{
         }
     }
     
+    
     func getCurrentTemperature(urlIndexForCurrentTemperature: Cities.city,completion: @escaping(CurrentTemperatureModel)->Void){
         currentTemperatureApiRequest.makeCallForCurrentTemperature(urlIndexForCurrentTemperature: urlIndexForCurrentTemperature) { response in
             self.currentTemperatureResponse = response
@@ -113,13 +135,6 @@ class WeatherViewModel:NSObject, CLLocationManagerDelegate{
         return rain!
     }
     
-//    func getTime()->String{
-//         let time = Date()
-//         let timeFormatter = DateFormatter()
-//         timeFormatter.dateFormat = "HH"
-//         let stringDate = timeFormatter.string(from: time)
-//         return stringDate
-//        }
     
     func setBlur(offset: CGFloat)->CGFloat{
         let progress = -offset / (UIScreen.main.bounds.height - 100)

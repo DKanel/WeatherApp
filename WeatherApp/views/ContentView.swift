@@ -15,11 +15,14 @@ struct ContentView: View {
     var viewModel = WeatherViewModel()
     var disposeBag = DisposeBag()
     @ObservedObject var locationManager = LocationManager()
+    @State var isActive = true
     @State var isAnimating: Bool = true
     @State private var showSheet = false
     @State var currentLocation = CLLocation(latitude: 52.5235, longitude: 13.4115)
     @State var imageName = ""
     @State var backgroundImage = "background"
+    @State var gifImage = "https://media0.giphy.com/media/k3CeSrt9IZ6aorWCy1/giphy.gif?cid=790b761121d68267b7f23c0b7d9eb18adac72f147580195b&rid=giphy.gif&ct=g"
+    @State var city = Cities.city.Athens
     @State var imageColor: Color? = .white
     @State var imageColor2: Color? = .white
     @State var imageColorForecast: Color? = .white
@@ -40,11 +43,13 @@ struct ContentView: View {
     
     var body: some View {
         ZStack{
+            
             //Background Image
             GeometryReader{ proxy in
+                
                 let frame  = proxy.frame(in: .global)
                 //Gif
-                WebImage(url: URL(string: "https://media0.giphy.com/media/k3CeSrt9IZ6aorWCy1/giphy.gif?cid=790b761121d68267b7f23c0b7d9eb18adac72f147580195b&rid=giphy.gif&ct=g"),isAnimating: $isAnimating)
+                WebImage(url: URL(string: gifImage),isAnimating: $isAnimating)
 //                Image(backgroundImage)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -52,7 +57,6 @@ struct ContentView: View {
 //                    .brightness(-0.1)
             }
             .ignoresSafeArea(.all)
-            
             VStack(alignment: .center,spacing: 50){
                 Text(currentCity).foregroundColor(textColor).bold()
                 HStack{
@@ -67,11 +71,12 @@ struct ContentView: View {
                     ForEach(1..<7) { number in
                         HStack{
                             Text(datesFormatted[number]).foregroundColor(textColor)
-                            Text("Max:").foregroundColor(textColor)
-                            Text(temperaturesMaxArray[number]).foregroundColor(textColor).bold()
-                            Text("Min:").foregroundColor(textColor)
+//                            Text("Max:").foregroundColor(textColor)
                             Text(temperaturesMinArray[number]).foregroundColor(textColor).bold()
-                            Text("Weather:").foregroundColor(textColor)
+//                            Text("Min:").foregroundColor(textColor)
+                            Text("...").foregroundColor(textColor)
+                            Text(temperaturesMaxArray[number]).foregroundColor(textColor).bold()
+//                            Text("Weather:").foregroundColor(textColor)
                             if #available(iOS 15.0, *) {
                                 Image(systemName: imagesNameArray[number])
                                     .resizable()
@@ -82,18 +87,18 @@ struct ContentView: View {
                             }
                                 }
                     }
+                    Spacer()
                 }
-                Spacer()
             }
             .blur(radius: viewModel.setBlur(offset: offset))
-            
+            PagerView()
             //BlurView
             GeometryReader{ proxy -> AnyView in
                 let height = proxy.frame(in: .global).height
                 return AnyView(
                     ZStack{
                         BlurView(style: .systemThinMaterialDark)
-                        VStack{
+                        VStack(spacing: 60){
                             Capsule()
                                 .fill(.white)
                                 .frame(width: 60, height: 4)
@@ -127,67 +132,77 @@ struct ContentView: View {
                 )
             }
             .ignoresSafeArea(.all,edges: .bottom)
-        }
-        .onAppear(){
             
+        }
+        .fullScreenCover(isPresented: $isActive, content: {
+            SplashView(isActive: $isActive,loadedTemperature: $temperature)
+        })
+    
+        
+        .onAppear(){
             //Dates
             datesFormatted = viewModel.getDate()
-            //Weather
-            viewModel.getWeather(urlIndex: Cities.city.Athens){ weatherResponse in
-                //Set Background image
-                let isSunset = viewModel.checkForSunset()
-                if isSunset == true{
-                    backgroundImage = "backgroundNight"
-                    textColor = .white
-                }
-                //Address
-                locationManager.checkAuthorization()
-                locationManager.getLocation { location in
-                    viewModel.getAddress(location: location) { city in
-                        currentCity = String(city)
-                    }
-                }
-                viewModel.getCurrentTemperature(urlIndexForCurrentTemperature: Cities.city.Athens) { response in
-                    self.temperature = String(response.currentWeather)
-                }
-                let rainny = viewModel.getWeatherType()
-                if rainny == true{
-                    imageName = "cloud.rain.fill"
-                    imageColor = .gray
-                    imageColor2 = .blue
-                }else{
-                    imageName = "sun.max.fill"
-                    imageColor = .yellow
-                    imageColor2 = .yellow
-                }
-            
-                let temperaturesMax = viewModel.getNextDaysMaxTemperature()
-                var numberIndexForTemperaturesMax = 0
-                for temperature in temperaturesMax {
-                    temperaturesMaxArray[numberIndexForTemperaturesMax] = String(temperature.temperature)
-                    numberIndexForTemperaturesMax = numberIndexForTemperaturesMax + 1
-                }
-                
-                let temperaturesMin = viewModel.getNextDaysMinTemperature()
-                var numberIndexForTemperaturesMin = 0
-                for temperature in temperaturesMin {
-                    temperaturesMinArray[numberIndexForTemperaturesMin] = String(temperature.temperature)
-                    numberIndexForTemperaturesMin = numberIndexForTemperaturesMin + 1
-                }
-
-                let rainInNextDays = viewModel.getNextDaysWeatherType()
-                var numberIndexForRains = 0
-                for rain in rainInNextDays{
-                    if rain.rains > 0{
-                        imagesNameArray[numberIndexForRains] = "cloud.rain.fill"
-                        colorForNextDayImages[numberIndexForRains] = Color.gray
-                        colorForNextDayImages2[numberIndexForRains] = Color.blue
-                        numberIndexForRains = numberIndexForRains + 1
-                    }else{
-                        imagesNameArray[numberIndexForRains] = "sun.max.fill"
-                        colorForNextDayImages[numberIndexForRains] = Color.yellow
-                        colorForNextDayImages2[numberIndexForRains] = Color.yellow
-                        numberIndexForRains = numberIndexForRains + 1
+            //Address
+            locationManager.checkAuthorization()
+            locationManager.getLocation { location in
+                viewModel.getCity(location: location) { responseCity in
+                    self.city = responseCity
+                    currentCity = self.city.rawValue
+                    
+                    //Weather
+                    viewModel.getWeather(urlIndex: city){ weatherResponse in
+                        
+                        //Set Background image
+                        let isSunset = viewModel.checkForSunset()
+                        if isSunset == true{
+                            backgroundImage = "backgroundNight"
+                            textColor = .white
+                            gifImage = "https://bestanimations.com/media/moon/1531195013moon-animation49.gif"
+                        }
+                        viewModel.getCurrentTemperature(urlIndexForCurrentTemperature: city) { response in
+                            
+                            self.temperature = String(response.currentWeather)
+                        }
+                        let rainny = viewModel.getWeatherType()
+                        if rainny == true{
+                            imageName = "cloud.rain.fill"
+                            imageColor = .gray
+                            imageColor2 = .blue
+                        }else{
+                            imageName = "sun.max.fill"
+                            imageColor = .yellow
+                            imageColor2 = .yellow
+                        }
+                        
+                        let temperaturesMax = viewModel.getNextDaysMaxTemperature()
+                        var numberIndexForTemperaturesMax = 0
+                        for temperature in temperaturesMax {
+                            temperaturesMaxArray[numberIndexForTemperaturesMax] = String(temperature.temperature)
+                            numberIndexForTemperaturesMax = numberIndexForTemperaturesMax + 1
+                        }
+                        
+                        let temperaturesMin = viewModel.getNextDaysMinTemperature()
+                        var numberIndexForTemperaturesMin = 0
+                        for temperature in temperaturesMin {
+                            temperaturesMinArray[numberIndexForTemperaturesMin] = String(temperature.temperature)
+                            numberIndexForTemperaturesMin = numberIndexForTemperaturesMin + 1
+                        }
+                        
+                        let rainInNextDays = viewModel.getNextDaysWeatherType()
+                        var numberIndexForRains = 0
+                        for rain in rainInNextDays{
+                            if rain.rains > 0{
+                                imagesNameArray[numberIndexForRains] = "cloud.rain.fill"
+                                colorForNextDayImages[numberIndexForRains] = Color.gray
+                                colorForNextDayImages2[numberIndexForRains] = Color.blue
+                                numberIndexForRains = numberIndexForRains + 1
+                            }else{
+                                imagesNameArray[numberIndexForRains] = "sun.max.fill"
+                                colorForNextDayImages[numberIndexForRains] = Color.yellow
+                                colorForNextDayImages2[numberIndexForRains] = Color.yellow
+                                numberIndexForRains = numberIndexForRains + 1
+                            }
+                        }
                     }
                 }
             }

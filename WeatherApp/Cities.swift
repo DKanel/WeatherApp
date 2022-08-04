@@ -9,10 +9,10 @@ import Foundation
 
 class Cities{
     
-    enum city{
-        case Athens
-        case Berlin
-        case Paris
-        case London
+    enum city: String{
+        case Athens = "Athens"
+        case Berlin = "Berlin"
+        case Paris = "Paris"
+        case London = "London"
     }
 }

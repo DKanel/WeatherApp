@@ -10,9 +10,9 @@ import SwiftyJSON
 
 class CurrentTemperatureModel{
     
-    let currentWeather: String
+    let currentWeather: Int
     
     init(json:JSON){
-        self.currentWeather = json["temp"].stringValue
+        self.currentWeather = json["temp"].intValue
     }
 }

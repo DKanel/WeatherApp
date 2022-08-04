@@ -32,8 +32,8 @@ struct SheetView: View {
     
     var body: some View {
         ZStack{
-            VStack{
-                Text("Drag to choose the city you want to see!")
+            VStack(spacing: 30){
+                Text("Choose the city you want to see!").foregroundColor(.black)
                 HStack(spacing: 20){
                     //Athens Button
                     VStack{
@@ -51,8 +51,6 @@ struct SheetView: View {
                                 .resizable()
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.gray)
-//                                .background(BlurView(style: .dark))
-//                                .clipShape(Circle())
                         }
                         Text("Athens")
                     }
@@ -71,8 +69,6 @@ struct SheetView: View {
                                 .resizable()
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.purple)
-//                                .background(BlurView(style: .dark))
-//                                .clipShape(Circle())
                         }
                         Text("Berlin")
                     }
@@ -95,8 +91,6 @@ struct SheetView: View {
                             } else {
                                 // Fallback on earlier versions
                             }
-//                                .background(BlurView(style: .dark))
-//                                .clipShape(Circle())
                         }
                         Text("Paris")
                     }
@@ -119,13 +113,13 @@ struct SheetView: View {
                             } else {
                                 // Fallback on earlier versions
                             }
-//                                .background(BlurView(style: .dark))
-//                                .clipShape(Circle())
                         }
                         Text("London")
                     }
                 }
             }
+        }.onAppear(){
+            
         }
     }
     

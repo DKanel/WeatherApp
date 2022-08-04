@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct SplashView: View {
-    @State private var isActive = false
+    @Binding var isActive: Bool
+    @Binding var loadedTemperature: String
     @State private var size = 0.8
     @State private var opacity = 0.5
+   
     
     var body: some View {
-        if isActive{
-            ContentView()
-        }else{
             VStack{
                 VStack{
                     Image(systemName: "thermometer.sun.fill")
@@ -33,14 +32,21 @@ struct SplashView: View {
                 }
             }
             .onAppear(){
+//                if loadedTemperature != ""{
+//                    self.isActive = false
+//                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
                     withAnimation {
-                        self.isActive = true
+                        self.isActive = false
                     }
                 }
             }
-        }
-       
+        
+
+//        }
+//        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+//        .background(Color.clear)
+//        .ignoresSafeArea()
     }
 }
 

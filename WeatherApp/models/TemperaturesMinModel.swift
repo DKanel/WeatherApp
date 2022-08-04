@@ -10,9 +10,9 @@ import SwiftyJSON
 
 class TemperaturesMinModel{
    
-    let temperature: Double
+    let temperature: Int
     
     init(json:JSON){
-        self.temperature = json[].doubleValue
+        self.temperature = json[].intValue
     }
 }
