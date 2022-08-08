@@ -23,11 +23,7 @@ class WeatherApiRequest{
     var url = ""
     var url2 = "https://api.open-meteo.com/v1/forecast?latitude=37.9792&longitude=23.7166&hourly=temperature_2m&timezone=Europe%2FMoscow"
     
-    var dailyRain = [RainsModel]()
-    var dailyMaxTemperature = [TemperaturesMaxModel]()
-    var dailyMinTemperature = [TemperaturesMinModel]()
-    var dailySunset = [SunsetModel]()
-    var hourlyTemperature = [HourlyTemperatureModel]()
+   
     
     func makeCall(urlIndex: Cities.city, completion: @escaping(WeatherModel)->Void){
         
@@ -43,6 +39,12 @@ class WeatherApiRequest{
         }
         
         AF.request(url).responseJSON{ [self] response in
+            
+            var dailyRain = [RainsModel]()
+            var dailyMaxTemperature = [TemperaturesMaxModel]()
+            var dailyMinTemperature = [TemperaturesMinModel]()
+            var dailySunset = [SunsetModel]()
+            
             switch response.result{
             case .success(let value):
                 let jsonValue = JSON(value)
@@ -82,6 +84,9 @@ class WeatherApiRequest{
 }
     
     func makeHourlyTempCall(completion: @escaping ([HourlyTemperatureModel]) -> Void){
+        
+        var hourlyTemperature = [HourlyTemperatureModel]()
+        
         AF.request(url2).responseJSON {  response in
             switch response.result{
             case .success(let value):
@@ -90,10 +95,10 @@ class WeatherApiRequest{
                 
                 for model in hourlyTempModel{
                     let hTemp = HourlyTemperatureModel(json: model)
-                    self.hourlyTemperature.append(hTemp)
+                    hourlyTemperature.append(hTemp)
                 }
-                print("Hourly",self.hourlyTemperature[0].hTemperature)
-                completion(self.hourlyTemperature)
+                print("Hourly",hourlyTemperature[0].hTemperature)
+                completion(hourlyTemperature)
             case .failure(let error):
                 print("Hourly Error", error)
         }

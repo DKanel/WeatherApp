@@ -24,6 +24,7 @@
 		6D61EB1A287C1812002CFADF /* TemperaturesMaxModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D61EB19287C1812002CFADF /* TemperaturesMaxModel.swift */; };
 		6D61EB1C287C1857002CFADF /* RainsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D61EB1B287C1857002CFADF /* RainsModel.swift */; };
 		6D6406B6287EE51100262CDD /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6406B5287EE51100262CDD /* LocationManager.swift */; };
+		6D6B5D0028A144AB00E1CD44 /* BasicTempratureInfosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D6B5CFF28A144AB00E1CD44 /* BasicTempratureInfosView.swift */; };
 		6D8C3FEB287FF48A00931548 /* TemperaturesMinModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8C3FEA287FF48A00931548 /* TemperaturesMinModel.swift */; };
 		6D8C3FED287FFF1600931548 /* CurrentTemperatureApiRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8C3FEC287FFF1600931548 /* CurrentTemperatureApiRequest.swift */; };
 		6D8C3FEF2880007A00931548 /* CurrentTemperatureModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D8C3FEE2880007A00931548 /* CurrentTemperatureModel.swift */; };
@@ -72,6 +73,7 @@
 		6D61EB19287C1812002CFADF /* TemperaturesMaxModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperaturesMaxModel.swift; sourceTree = "<group>"; };
 		6D61EB1B287C1857002CFADF /* RainsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RainsModel.swift; sourceTree = "<group>"; };
 		6D6406B5287EE51100262CDD /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		6D6B5CFF28A144AB00E1CD44 /* BasicTempratureInfosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicTempratureInfosView.swift; sourceTree = "<group>"; };
 		6D8C3FEA287FF48A00931548 /* TemperaturesMinModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemperaturesMinModel.swift; sourceTree = "<group>"; };
 		6D8C3FEC287FFF1600931548 /* CurrentTemperatureApiRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTemperatureApiRequest.swift; sourceTree = "<group>"; };
 		6D8C3FEE2880007A00931548 /* CurrentTemperatureModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTemperatureModel.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				6D20B899288AC24D00D853EC /* PagerView.swift */,
 				6D027AE5288AC8C6000C9B2F /* BarView.swift */,
 				6D027AE7288AC99D000C9B2F /* BarChartView.swift */,
+				6D6B5CFF28A144AB00E1CD44 /* BasicTempratureInfosView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -509,6 +512,7 @@
 				6D8C3FF32880200C00931548 /* SunsetModel.swift in Sources */,
 				6DA77E8928741B0C00BE9D67 /* WeatherAppApp.swift in Sources */,
 				6D20B898288AA38100D853EC /* SheetViewModel.swift in Sources */,
+				6D6B5D0028A144AB00E1CD44 /* BasicTempratureInfosView.swift in Sources */,
 				6D20B89A288AC24D00D853EC /* PagerView.swift in Sources */,
 				6D61EB1C287C1857002CFADF /* RainsModel.swift in Sources */,
 			);

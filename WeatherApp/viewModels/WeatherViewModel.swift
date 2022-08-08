@@ -98,6 +98,7 @@ class WeatherViewModel:NSObject, CLLocationManagerDelegate{
     func getWeather(urlIndex: Cities.city,completion: @escaping(WeatherModel)->Void){
         wetherApiRequest.makeCall(urlIndex: urlIndex) { weatherModel in
             self.weatherResponse = weatherModel
+            print("weather response",self.weatherResponse?.temperatureMax.count)
             completion(self.weatherResponse!)
         }
     }
